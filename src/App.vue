@@ -2,6 +2,7 @@
   <div id="app">
     <sidebar/>
     <router-view/>
+    
   </div>
 </template>
 
@@ -33,13 +34,13 @@ html, body, #app {
 }
 
 body {
+  border:1px solid red;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
   -moz-osx-font-smoothing: grayscale;  
   background-color: #eee;
 }

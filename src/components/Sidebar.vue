@@ -6,7 +6,7 @@
       <router-link to="/notebooks" title="笔记本">2<i class="iconfont icon-notebook"></i></router-link>
       <router-link to="/trash/2" title="回收站">3<i class="iconfont icon-trash"></i></router-link> 
     </div> 
-    <div class="logout" @click="onLogout">
+    <div class="logout" click="onLogout">
       <i class="iconfont icon-logout"></i>
     </div>
   </div>
