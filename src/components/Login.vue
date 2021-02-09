@@ -1,118 +1,156 @@
 <template>
-    <div id="login">
+  <div id="login">
     <div class="modal-mask">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-                <div class="main"></div>
-                <div class="form">
-                    <h3 @click="showRegister" >创建账户</h3>
-                    <transition name="slide">
-                    <div :class="{show:isShowRegister}" class="register">
-                        <input type="text" v-model="register.username" placeholder="用户名">
-                        <input type="password" v-model="register.password" placeholder="密码">
-                        <p :class="{error:register.isError}">{{register.notice}}</p>
-                        <div @click="onRegister" class="button">创建账号</div>
-                    </div>
-                    </transition>
-                    <h3 @click="showLogin" >登录</h3>
-                    <transition name="slide">
-                    <div :class="{show:isShowLogin}" class="login">
-                        <input type="text" v-model="login.username" placeholder="输入用户名">
-                        <input type="password" v-model="login.password" placeholder="密码">
-                            <p :class="{error:login.isError}">{{login.notice}}</p>
-                        <div @click="onLogin" class="button">登录</div>
-                    </div>
-                    </transition>
-                </div>
-            </div>
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="main"></div>
+          <div class="form">
+            <h3 @click="showRegister">创建账户</h3>
+            <transition name="slide">
+              <div :class="{ show: isShowRegister }" class="register">
+                <input type="text" v-model="register.username" placeholder="用户名" />
+                <input type="password" v-model="register.password" placeholder="密码" />
+                <p :class="{ error: register.isError }">{{ register.notice }}</p>
+                <div @click="onRegister" class="button">创建账号</div>
+              </div>
+            </transition>
+            <h3 @click="showLogin">登录</h3>
+            <transition name="slide">
+              <div :class="{ show: isShowLogin }" class="login">
+                <input type="text" v-model="login.username" placeholder="输入用户名" />
+                <input type="password" v-model="login.password" placeholder="密码" />
+                <p :class="{ error: login.isError }">{{ login.notice }}</p>
+                <div @click="onLogin" class="button">登录</div>
+              </div>
+            </transition>
+          </div>
         </div>
+      </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
+import Auth from "@/apis/auth.js";
+import Bus from "@/helpers/bus.js";
+
+// Auth.getInfo()
+//     .then(data=>{
+//         console.log(data)
+//     })
+
+//  request('/auth')
+//  .then(data=>{
+//      console.log(data)
+//  })
+
 export default {
-    
-    name:'Login',
-    data(){
-        return{
-            isShowLogin:false,
-            isShowRegister:true,
-            login:{
-                username:'xiao',
-                password:'123456',
-                notice:'请输入用户名和密码',
-                isError:false
-            },
-            register:{
-                username:'',
-                password:'',
-                notice:'创建后请记住用户名和密码',
-                isError:false
-            }
-        }
+  name: "Login",
+  data() {
+    return {
+      isShowLogin: true,
+      isShowRegister: false,
+      login: {
+        username: "frank",
+        password: "123456",
+        notice: "请输入用户名和密码",
+        isError: false,
+      },
+      register: {
+        username: "",
+        password: "",
+        notice: "创建后请记住用户名和密码",
+        isError: false,
+      },
+    };
+  },
+  methods: {
+    showLogin() {
+      this.isShowLogin = true;
+      this.isShowRegister = false;
     },
-    methods:{
-        showLogin(){
-            this.isShowLogin = true
-            this.isShowRegister = false
-        },
-        showRegister(){
-            this.isShowRegister = true 
-            this.isShowLogin = false
-        },
-        onLogin(){
-            let result1 = this.validUsername(this.login.username)
-            if(!result1.isValid){
-                this.login.isError = true
-                this.login.notice = result1.notice
-                return
-            }
-            let result2 = this.validPassword(this.login.password)
-            if(!result2.isValid){
-                this.login.isError = true
-                this.login.notice = result2.notice
-                return
-            }
-            this.login.isError = false
-            this.login.notice = ''
-            console.log('登录成功，用户名是:'+this.login.username+' 密码是：'+this.login.password)
-        },
-        onRegister(){
-            let result1 = this.validUsername(this.register.username)
-            if(!result1.isValid){
-                this.register.isError = true
-                this.register.notice = result1.notice
-                return
-            }
-            let result2 = this.validPassword(this.register.password)
-            if(!result2.isValid){
-                this.register.isError = true
-                this.register.notice = result2.notice
-                return
-            }
-            this.register.isError = false
-            this.register.notice = ''
-            console.log('开始注册，用户名是:'+this.register.username+' 密码是：'+this.register.password)
-        },
-        validUsername(username){
-            return{
-                isValid:/^[a-zA-Z_0-9\u4e00-\u9fa5]{3,15}$/.test(username),
-                notice:'用户名必须是3-15个字符，仅限字母数字下划线中文'
-            }
-        },
-        validPassword(password){
-            return{
-                isValid:/^.{4,16}$/.test(password),
-                notice:'密码长度为4-16个字符'
-            }
-        }
-    }
-    
-}
+    showRegister() {
+      this.isShowRegister = true;
+      this.isShowLogin = false;
+    },
+    onLogin() {
+      let result1 = this.validUsername(this.login.username);
+      if (!result1.isValid) {
+        this.login.isError = true;
+        this.login.notice = result1.notice;
+        return;
+      }
+      let result2 = this.validPassword(this.login.password);
+      if (!result2.isValid) {
+        this.login.isError = true;
+        this.login.notice = result2.notice;
+        return;
+      }
+
+      console.log(
+        "登录成功，用户名是:" + this.login.username + " 密码是：" + this.login.password
+      );
+      Auth.login({ username: this.login.username, password: this.login.password })
+        .then(() => {
+          this.login.isError = false;
+          this.login.notice = "";
+          Bus.$emit("userInfo", { username: this.login.username });
+          this.$router.push({ path: "notebooks" });
+          console.log("进行跳转");
+        })
+        .catch((data) => {
+          this.login.isError = true;
+          this.login.notice = data.msg;
+        });
+    },
+    onRegister() {
+      let result1 = this.validUsername(this.register.username);
+      if (!result1.isValid) {
+        this.register.isError = true;
+        this.register.notice = result1.notice;
+        return;
+      }
+      let result2 = this.validPassword(this.register.password);
+      if (!result2.isValid) {
+        this.register.isError = true;
+        this.register.notice = result2.notice;
+        return;
+      }
+
+      console.log(
+        "开始注册，用户名是:" +
+          this.register.username +
+          " 密码是：" +
+          this.register.password
+      );
+      Auth.register({ username: this.register.username, password: this.login.password })
+        .then(() => {
+          this.register.isError = false;
+          this.register.notice = "";
+          Bus.$emit("userInfo", { username: this.register.username });
+          this.$router.push({ path: "notebooks" });
+        })
+        .catch((data) => {
+          this.register.isError = true;
+          this.register.notice = data.msg;
+        });
+    },
+    validUsername(username) {
+      return {
+        isValid: /^[a-zA-Z_0-9\u4e00-\u9fa5]{3,15}$/.test(username),
+        notice: "用户名必须是3-15个字符，仅限字母数字下划线中文",
+      };
+    },
+    validPassword(password) {
+      return {
+        isValid: /^.{4,16}$/.test(password),
+        notice: "密码长度为4-16个字符",
+      };
+    },
+  },
+};
 </script>
 <style lang="less">
-
 .modal-mask {
   position: fixed;
   z-index: 100;
@@ -120,9 +158,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, 0.7);
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -136,20 +174,21 @@ export default {
   margin: 0px auto;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
   display: flex;
 
   .main {
     flex: 1;
-    background: #36bc64 url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center center no-repeat;
+    background: #36bc64 url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center
+      center no-repeat;
     background-size: contain;
   }
   .form {
     width: 270px;
     border-left: 1px solid #ccc;
-    overflow:hidden;
+    overflow: hidden;
 
     h3 {
       padding: 10px 20px;
@@ -159,7 +198,7 @@ export default {
       border-top: 1px solid #eee;
       cursor: pointer;
 
-      &:nth-of-type(2){
+      &:nth-of-type(2) {
         border-bottom: 1px solid #eee;
       }
     }
@@ -176,14 +215,15 @@ export default {
       cursor: pointer;
     }
 
-    .login,.register {
+    .login,
+    .register {
       padding: 0px 20px;
       border-top: 1px solid #eee;
       height: 0;
       overflow: hidden;
-      transition:height linear 0.5s;
-      &.show{
-          height: 193px;
+      transition: height linear 0.5s;
+      &.show {
+        height: 193px;
       }
 
       input {
@@ -213,7 +253,7 @@ export default {
     }
     .login {
       border-top: 0;
-    } 
+    }
   }
 }
 </style>

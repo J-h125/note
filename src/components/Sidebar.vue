@@ -2,22 +2,32 @@
   <div id="sidebar">
       <avatar/>
     <div class="icons">
-      <router-link to="/note/1" title="笔记">1<i class="iconfont icon-note"></i></router-link>
+      <router-link to="/note" title="笔记">1<i class="iconfont icon-note"></i></router-link>
       <router-link to="/notebooks" title="笔记本">2<i class="iconfont icon-notebook"></i></router-link>
-      <router-link to="/trash/2" title="回收站">3<i class="iconfont icon-trash"></i></router-link> 
+      <router-link to="/trash" title="回收站">3<i class="iconfont icon-trash"></i></router-link> 
     </div> 
     <div class="logout" click="onLogout">
-      <i class="iconfont icon-logout"></i>
+      <i class="iconfont icon-logout" @click="logout"></i>
     </div>
   </div>
 </template>
 
 <script>
 import Avatar from './Avatar.vue'
+import Auth from '@/apis/auth'
     
   export default {
       components:{
             Avatar  
+      },
+      methods:{
+          logout(){
+              Auth.logout()
+              .then(data=>{
+                  this.$router.push({path:'login'})
+                  console.log(data)
+              })
+          }
       }
   }  
 

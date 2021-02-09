@@ -1,15 +1,26 @@
 <template>
     <div id="note-detail">
-        <h1>{{msg}}:{{route.params.noteId}}</h1>
+        <h1>notebookId:{{$route.query.notebookId}}</h1>
+        <h1>noteId:{{$route.query.noteId}}</h1>
     </div>
 </template>
 
 <script>
+import Auth from "@/apis/auth.js"
+
 export default {
     data(){
         return{
             msg:'笔记本详情页'
         }
+    },
+     created(){
+        Auth.getInfo()
+        .then(res=>{
+            if(!res.isLogin){
+                this.$router.push({path:'/login'})
+            }
+        })
     }
 }
 </script>
