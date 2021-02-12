@@ -31,16 +31,43 @@
 </template>
 
 <script>
-//import Notebooks from "@/apis/notebooks";
+import Notebooks from "@/apis/notebooks";
+import Notes from "@/apis/notes"
+
+window.Notes = Notes
+
 export default {
+  created() {
+    Notebooks.getAll().then((res) => {
+      this.notebooks = res.data;
+    });
+  },
+
   data() {
     return {
-      notebooks: {
-        id: 1,
-      },
+      notebooks: [
+        
+      ],
+      notes: [
+        
+      ],
+      curBook:{}
     };
   },
-};
+  methods: {
+    addNote(){},
+  handleCommand(notebookId){
+    if(notebookId !== 'trash'){
+      Notes.getAll({notebookId})
+      .then(res =>{
+          this.notes = res.data
+      })
+    }
+  }
+}
+}
 </script>
 
-<style lang="css"></style>
+<style lang="less">
+@import url(../assets/css/note-sidebar.less);
+</style>
