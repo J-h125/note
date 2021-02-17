@@ -1,6 +1,7 @@
 import request from "@/helpers/request";
 import { noteDate } from "@/helpers/notedate";
 
+
 const URL = {
   GET: "/notes/from/:notebookId",
   ADD: "/notes/to/:notebookId",
@@ -27,13 +28,23 @@ export default {
         });
     });
   },
-  updateNotebook({ noteId }, { title, content }) {
+  updateNote({ noteId }, { title, content }) {
     return request(URL.UPDATE.replace(":noteId", noteId), "PATCH", {title,content});
   },
-  deleteNotebook({ noteId }) {
+  deleteNote({ noteId }) {
     return request(URL.DELETE.replace(":noteId", noteId), "DELETE");
   },
-  addNotebook({ notebookId },{ title = "", content = "" } = { title: "", content: "" }) {
-    return request(URL.ADD.replace(':notebookId',notebookId), "POST", { title });
-  },
+  addNote({ notebookId },  { title = '', content = ''} = { title: '', content: ''}) {
+    return new Promise((resolve, reject) => {
+      request(URL.ADD.replace(':notebookId', notebookId), 'POST', { title, content })
+        .then(res => {
+          res.data.createdAtFriendly = noteDate(res.data.createdAt)
+          res.data.updatedAtFriendly = noteDate(res.data.updatedAt)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+    })
+    //return request(URL.ADD.replace(':notebookId', notebookId), 'POST', { title, content })
+  }
 };

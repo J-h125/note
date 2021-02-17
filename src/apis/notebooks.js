@@ -13,8 +13,8 @@ export default {
         return new Promise((resolve,reject)=>{
             request(URL.GET)
             .then(res =>{
-                res.data = res.data.sort((notebook1,notebook2)=>notebook1.createAt < notebook2.createAt)
-                .map(notebook => {
+                res.data = res.data.sort((notebook1,notebook2) => notebook1.createAt < notebook2.createAt)
+                res.data.forEach(notebook => {
                     notebook.noteCreateAt = noteDate(notebook.createAt)
                 })
                 resolve(res)

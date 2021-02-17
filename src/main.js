@@ -9,7 +9,7 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 
-new Vue({
+window.vm = new Vue({
   router, //等同于 router : router
   store,
   render: (h) => h(App),

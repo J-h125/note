@@ -7,7 +7,7 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
-          v-for="notebook in notebooks"
+          v-for="(notebook) in notebooks"
           :command="notebook.id"
           :key="notebook.id"
           >{{ notebook.title }}
@@ -20,9 +20,9 @@
       <div>标题</div>
     </div>
     <ul class="notes">
-      <li v-for="note in notes" :key="note">
+      <li v-for="note in notes" :key="note.id">
         <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
-          <span class="date">{{ note.updatedAtFriendly }}</span>
+          <span class="date">{{ note.updatedAt }}</span>
           <span class="title">{{ note.title }}</span>
         </router-link>
       </li>
@@ -32,7 +32,8 @@
 
 <script>
 import Notebooks from "@/apis/notebooks";
-import Notes from "@/apis/notes"
+import Notes from "@/apis/notes";
+import Bus from "@/helpers/bus"
 
 window.Notes = Notes
 
@@ -40,30 +41,45 @@ export default {
   created() {
     Notebooks.getAll().then((res) => {
       this.notebooks = res.data;
-    });
+      this.curBook = this.notebooks.find(notebook => notebook.id === this.$route.query.notebookId)
+      || this.notebooks[0] || {}
+      return Notes.getAll({notebookId:this.curBook.id})
+    }).then(res =>{
+      this.notes = res.data
+      this.$emit('update:notes',this.notes)
+      Bus.$emit('update:notes',this.notes)
+    })
   },
-
+  props:['curNote'],
   data() {
     return {
-      notebooks: [
-        
-      ],
-      notes: [
-        
-      ],
-      curBook:{}
+      notebooks: [],
+      notes: [],
+      curBook:{}   //当前笔记本
     };
   },
   methods: {
-    addNote(){},
+    
   handleCommand(notebookId){
-    if(notebookId !== 'trash'){
-      Notes.getAll({notebookId})
+    if(notebookId == 'trash'){
+     return this.$router.push({path:'trash'})
+    }
+    this.curBook = this.notebooks.find(notebook => notebook.id == notebookId)
+     Notes.getAll({notebookId})
       .then(res =>{
           this.notes = res.data
+          this.$emit('update:notes',this.notes)
       })
-    }
-  }
+  },
+  addNote(){
+     Notes.addNote({notebookId:this.curBook.id})
+     .then(res =>{
+       console.log(res)
+       this.notes.unshift(res.data)
+     }
+       
+     )
+  },
 }
 }
 </script>
