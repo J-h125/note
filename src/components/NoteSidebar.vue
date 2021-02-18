@@ -22,7 +22,7 @@
     <ul class="notes">
       <li v-for="note in notes" :key="note.id">
         <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
-          <span class="date">{{ note.updatedAt }}</span>
+          <span class="date">{{ note.updatedAtFriendly }}</span>
           <span class="title">{{ note.title }}</span>
         </router-link>
       </li>
@@ -41,7 +41,7 @@ export default {
   created() {
     Notebooks.getAll().then((res) => {
       this.notebooks = res.data;
-      this.curBook = this.notebooks.find(notebook => notebook.id === this.$route.query.notebookId)
+      this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)  // == 跳转到对应的笔记本
       || this.notebooks[0] || {}
       return Notes.getAll({notebookId:this.curBook.id})
     }).then(res =>{
@@ -58,11 +58,10 @@ export default {
       curBook:{}   //当前笔记本
     };
   },
-  methods: {
-    
+methods: {
   handleCommand(notebookId){
     if(notebookId == 'trash'){
-     return this.$router.push({path:'trash'})
+        return this.$router.push({path:'trash'})
     }
     this.curBook = this.notebooks.find(notebook => notebook.id == notebookId)
      Notes.getAll({notebookId})

@@ -14,8 +14,8 @@ export default {
       request(URL.GET.replace(":notebookId", notebookId))
         .then((res) => {
            res.data = res.data.map(note =>{
-            note.createAt = noteDate(note.createAt)
-            note.updatedAt = noteDate(note.updatedAt)
+            note.createdAtFriendly = noteDate(note.createdAt)
+            note.updatedAtFriendly = noteDate(note.updatedAt)
             return note
           }).sort((note1,note2) =>{
             return note1.updatedAt < note2.updatedAt

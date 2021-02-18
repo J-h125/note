@@ -5,8 +5,8 @@
       <div class="note-empty" v-show="!curNote.id">请选择笔记</div>
       <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
-          <span> 创建日期: {{ curNote.createdAt }}</span>
-          <span> 更新日期: {{ curNote.updatedAt }}</span>
+          <span> 创建日期: {{ curNote.createdAtFriendly }}</span>
+          <span> 更新日期: {{ curNote.updatedAtFriendly }}</span>
           <span> {{ statusText }}</span>
           <span class="iconfont icon-delete" @click='deleteNote'></span>
           <span class="iconfont icon-fullscreen" @click="isShowPreview = !isShowPreview" ></span>
@@ -17,7 +17,7 @@
           
         <div class="editor">
           <textarea
-            v-show="isShowPreview"
+            v-show="!isShowPreview"
            v-model="curNote.content"
             @input="updateNote"
             @keydown="statusText = '正在输入...'"
@@ -26,7 +26,7 @@
           <div
             class="preview markdown-body"
             v-html="previewContent"
-            v-show="!isShowPreview"
+            v-show="isShowPreview"
           ></div>
         </div>
       </div>
@@ -66,18 +66,19 @@ export default {
         }
     })
     Bus.$once('update:notes',val => {
-    this.curNote = val.find(note => note.id == this.$route.query.noteId) || {}
+    this.curNote = val.find((note) => note.id == this.$route.query.noteId) || {}
   })
   },
   
 
   beforeRouteUpdate (to, from, next) {   //路由更新
-   // console.log('beforeRouteUpdata')
-    this.curNote = this.notes.find(note => note.id == to.query.noteId || {})
+    console.log('beforeRouteUpdata')
+    this.isShowPreview = false     //路由切换后默认为编辑模式
+    this.curNote = this.notes.find((note) => note.id == to.query.noteId) || {}
     next()
   },
   computed:{
-      previewContent(){
+      previewContent(){           //预览markdown
         return md.render(this.curNote.content||'')
       }
   },
