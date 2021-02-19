@@ -75,6 +75,7 @@ export default {
 
   methods: {
     ...mapActions(['getNotebooks','addNotebook','updateNotebook','deleteNotebook']),
+    //将this.addNotebook 映射为 this.$store.dispatch('addNotebook')
     onCreate() {
       this.$prompt('输入新笔记本标题', '创建笔记本', {
           confirmButtonText: '确定',

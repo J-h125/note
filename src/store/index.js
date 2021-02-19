@@ -1,12 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import notebook from './notebook'
+import note from './note'
+import trash from './trash'
+import user from './user'
+
 
 Vue.use(Vuex)
 
 const store =  new Vuex.Store({
   modules: {
-    notebook
+    notebook,
+    note,
+    trash,
+    user
   }
 })
 // store.commit(type:'increment',amount:5)

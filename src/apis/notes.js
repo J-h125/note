@@ -20,7 +20,6 @@ export default {
           }).sort((note1,note2) =>{
             return note1.updatedAt < note2.updatedAt
           })
-
           resolve(res);
         })
         .catch((err) => {
