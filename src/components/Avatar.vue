@@ -5,29 +5,38 @@
 <script>
     import Auth from '@/apis/auth'   
     import Bus from "@/helpers/bus.js"
+    import {mapGetters,mapActions} from 'vuex'
 
 export default {
     data(){
         return{
-             username:'note',
+            // username:'note',
            
         }
     },
     created(){
-        Bus.$on('userInfo',user => {
-            this.username = user.username
-        })
-        Auth.getInfo()
-        .then(res=>{
-            if(res.isLogin){
-                this.username = res.data.username
-            }
-        })
+        // Bus.$on('userInfo',user => {
+        //     this.username = user.username
+        // })
+        // Auth.getInfo()
+        // .then(res=>{
+        //     if(res.isLogin){
+        //         this.username = res.data.username
+        //     }
+        // })
+        this.checkLogin()
+    },
+    methods:{
+        ...mapActions(['checkLogin'])
     },
     computed:{
-        slug(){
-            return this.username.charAt(0)
-        }
+        ...mapGetters([
+            'username',
+            'slug'
+        ]),
+        // slug(){
+        //     return this.username.charAt(0)
+        // }
     }
 
 }
@@ -42,7 +51,7 @@ span {
     text-align: center;
     line-height: 32px;
     border-radius:50%;
-   background: #f2b81c;
+   background: #398dee;
    color: #fff;
    text-shadow: 1px 0 1px #795c19;
    font-weight: bold;

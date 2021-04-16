@@ -2,12 +2,30 @@
   <div id="sidebar">
       <avatar/>
     <div class="icons">
-      <router-link to="/note" title="笔记">1<i class="iconfont icon-note"></i></router-link>
-      <router-link to="/notebooks" title="笔记本">2<i class="iconfont icon-notebook"></i></router-link>
-      <router-link to="/trash" title="回收站">3<i class="iconfont icon-trash"></i></router-link> 
+      <router-link to="/note" title="笔记">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-note"></use>
+        </svg>
+        <div class="text">笔记详情</div>
+       </router-link>
+      <router-link to="/notebooks" title="笔记本">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-notebook"></use>
+        </svg>
+        <div class="text">笔记本列表</div>
+        </router-link>
+      <router-link to="/trash" title="回收站">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-trash"></use>
+        </svg>
+        <div class="text">回收站</div>
+        </router-link>
     </div> 
-    <div class="logout" click="onLogout">
-      <i class="iconfont icon-logout" @click="logout"></i>
+    <div class="logout" >
+      <svg class="icon" aria-hidden="true"  @click="onLogout">
+        <use xlink:href="#icon-exit"></use>
+      </svg>
+      <div class="text">退出</div>
     </div>
   </div>
 </template>
@@ -15,19 +33,24 @@
 <script>
 import Avatar from './Avatar.vue'
 import Auth from '@/apis/auth'
+import {mapActions} from 'vuex'
     
   export default {
       components:{
             Avatar  
       },
       methods:{
-          logout(){
-              Auth.logout()
-              .then(data=>{
-                  this.$router.push({path:'login'})
-                  console.log(data)
-              })
-          }
+        ...mapActions(['logout']),
+        onLogout(){
+          this.logout({path:'/login'})
+        }
+          // logout(){
+          //     Auth.logout()
+          //     .then(data=>{
+          //         this.$router.push({path:'/login'})
+          //         console.log(data)
+          //     })
+          // }
       }
   }  
 
@@ -36,10 +59,11 @@ import Auth from '@/apis/auth'
 <style scoped>
 
 #sidebar {
+
   position: relative;
-  width: 56px;
+  width: 100px;
   text-align: center;
-  background-color: #2c333c;
+  background-color: #f5f5f5;
 }
 
 .icons {
@@ -52,7 +76,7 @@ import Auth from '@/apis/auth'
 }
 
 .icons .router-link-active {
-  background-color: #5e6266;
+  background-color: #eee;
 }
 
 .logout {
@@ -63,7 +87,5 @@ import Auth from '@/apis/auth'
   cursor: pointer;
 }
 
-.iconfont {
-  color: #fff;
-}
+
 </style>

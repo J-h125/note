@@ -20,9 +20,14 @@ export default {
 
  <style>
 
-@import '//at.alicdn.com/t/font_496303_kqrjhri8l25d0a4i.css';
+/*@import '//at.alicdn.com/t/font_496303_kqrjhri8l25d0a4i.css';*/
 
-
+.icon {
+  width: 1.5em; height: 1.5em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
  * {
   box-sizing: border-box;
   margin: 0;

@@ -14,3 +14,5 @@ window.vm = new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+//window.alert('暂未适配移动端，想要更好的体验请到pc端')

@@ -1,7 +1,7 @@
 <template>
   <div class="detail" id="notebook-list">
     <header>
-      <a href="#" class="btn" @click.prevent="onCreate"><i class="iconfont icon-plus"></i> 新建笔记本</a>
+      <a href="#"  @click.prevent="onCreate"> <el-button size="mini">添加笔记本</el-button> </a>
     </header>
     <main>
       <div class="layout">
@@ -48,21 +48,21 @@ export default {
   },
 
   created() {
-    console.log('创建'+this.notebooks)
-    Auth.getInfo()
-      .then(res => {
-        if(!res.isLogin) {
-          this.$router.push({path: '/login'})
-        }
+    this.checkLogin({path:'/login'})
+    // Auth.getInfo()
+    //   .then(res => {
+    //     if(!res.isLogin) {
+    //       this.$router.push({path: '/login'})
+    //     }
        
-      })
+    //   })
 
     // Notebooks.getAll()         //获取笔记本列表
     //   .then(res => {
     //     console.log(res)
     //     this.notebooks = res.data
     //   })
-    this.$store.dispatch('getNotebooks')  //获取笔记本列表
+    this.getNotebooks() //获取笔记本列表
   },
   computed:{
      ...mapGetters(['notebooks']),
@@ -74,7 +74,13 @@ export default {
 
 
   methods: {
-    ...mapActions(['getNotebooks','addNotebook','updateNotebook','deleteNotebook']),
+    ...mapActions([
+      'getNotebooks',
+      'addNotebook',
+      'updateNotebook',
+      'deleteNotebook',
+      'checkLogin'
+      ]),
     //将this.addNotebook 映射为 this.$store.dispatch('addNotebook')
     onCreate() {
       this.$prompt('输入新笔记本标题', '创建笔记本', {
@@ -119,6 +125,7 @@ export default {
           type: 'warning'
         }).then(() => {
           this.deleteNotebook({notebookId:notebook.id})
+
         })
         // .then(res => {
         //   this.notebooks.splice(this.notebooks.indexOf(notebook), 1)

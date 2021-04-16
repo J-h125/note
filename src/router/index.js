@@ -11,25 +11,20 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    alias:'/notebooks',        //別名
+    component: () => import('../components/NotebookList.vue')
   },
   {
     path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/notebooks',
-    component: NotebookList
+    component:  () => import('../components/Login.vue')
   },
   {
     path: '/note',
-    component: NoteDetail
+    component:  () => import('../components/NoteDetail.vue')
   },
   {
     path: '/trash',
-    component: TrashDetail
+    component:  () => import('../components/TrashDetail.vue')
   },
 ]
 

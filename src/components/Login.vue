@@ -33,6 +33,7 @@
 <script>
 import Auth from "@/apis/auth.js";
 import Bus from "@/helpers/bus.js";
+import {mapGetters,mapActions} from 'vuex'
 
 // Auth.getInfo()
 //     .then(data=>{
@@ -51,7 +52,7 @@ export default {
       isShowLogin: true,
       isShowRegister: false,
       login: {
-        username: "frank",
+        username: "wang",
         password: "123456",
         notice: "请输入用户名和密码",
         isError: false,
@@ -65,6 +66,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      loginUser:'login',
+      registerUser:'register'
+    }),
     showLogin() {
       this.isShowLogin = true;
       this.isShowRegister = false;
@@ -90,11 +95,11 @@ export default {
       console.log(
         "登录成功，用户名是:" + this.login.username + " 密码是：" + this.login.password
       );
-      Auth.login({ username: this.login.username, password: this.login.password })
+      this.loginUser({ username: this.login.username, password: this.login.password })
         .then(() => {
           this.login.isError = false;
           this.login.notice = "";
-          Bus.$emit("userInfo", { username: this.login.username });
+         // Bus.$emit("userInfo", { username: this.login.username });
           this.$router.push({ path: "notebooks" });
           console.log("进行跳转");
         })
@@ -123,11 +128,11 @@ export default {
           " 密码是：" +
           this.register.password
       );
-      Auth.register({ username: this.register.username, password: this.login.password })
+      this.registerUser({ username: this.register.username, password: this.login.password })
         .then(() => {
           this.register.isError = false;
           this.register.notice = "";
-          Bus.$emit("userInfo", { username: this.register.username });
+       //   Bus.$emit("userInfo", { username: this.register.username });
           this.$router.push({ path: "notebooks" });
         })
         .catch((data) => {
@@ -152,15 +157,16 @@ export default {
 </script>
 <style lang="less">
 .modal-mask {
+
   position: fixed;
   z-index: 100;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0);
   display: table;
-  transition: opacity 0.3s ease;
+  transition: opacity 1s ease;
 }
 
 .modal-wrapper {
@@ -169,8 +175,9 @@ export default {
 }
 
 .modal-container {
-  width: 800px;
-  height: 500px;
+
+  width: 100%;
+  height: 100%;
   margin: 0px auto;
   background-color: #fff;
   border-radius: 2px;
@@ -180,17 +187,20 @@ export default {
   display: flex;
 
   .main {
+
     flex: 1;
-    background: #36bc64 url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center
-      center no-repeat;
-    background-size: contain;
+    background: rgb(57, 141, 238) url("../assets/img/note.jpg") ;
+    //background: #36bc64 url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center
+    //  center no-repeat;
+    background-size: cover;
   }
   .form {
-    width: 270px;
+    width: 370px;
     border-left: 1px solid #ccc;
     overflow: hidden;
 
     h3 {
+      color: #398dee;
       padding: 10px 20px;
       //margin-top:-1px ;
       font-weight: normal;
@@ -204,7 +214,7 @@ export default {
     }
 
     .button {
-      background-color: #2bb964;
+      background-color: #398dee;
       height: 36px;
       line-height: 36px;
       text-align: center;

@@ -1,11 +1,15 @@
 <template>
   <div class="note-sidebar">
-    <span class="btn add-note" @click="onAddNote">添加笔记</span>
+    <el-button class="btn add-note"  plain @click="onAddNote">添加笔记</el-button>
+<!--    <span class="btn add-note" @click="onAddNote">添加笔记</span>-->
     <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
       <span class="el-dropdown-link">
-        {{ curBook.title }}<i class="iconfont icon-down"></i>
+        {{ curBook.title }}
+        <svg class="icon iconfont" aria-hidden="true">
+        <use xlink:href="#icon-down"></use>
+      </svg>
       </span>
-      <el-dropdown-menu slot="dropdown">
+      <el-dropdown-menu slot="dropdown" >
         <el-dropdown-item
           v-for="(notebook) in notebooks"
           :command="notebook.id"
@@ -44,8 +48,19 @@ export default {
   created() { 
     this.getNotebooks()
       .then(() => {
-        this.$store.commit('setCurBook',{curBookId:this.$route.query.notebookId})
-        this.getNotes({notebookId:this.curBook.id})
+        this.setCurBook({curBookId:this.$route.query.notebookId})
+        //this.$store.commit('setCurBook',{curBookId:this.$route.query.notebookId})
+       return this.getNotes({notebookId:this.curBook.id})
+      }).then(()=>{
+        this.setCurNote({curNoteId:this.$route.query.noteId})
+        this.$router.replace({         //进入笔记本页面后选中一个笔记
+          path:'/note',
+          query:{
+            noteId:this.curNote.id,
+            noteBookId:this.curBook.id
+          }
+        })
+       // this.$store.commit('setCurNote',{curNoteId:this.$route.query.noteId})
       })
 
     // Notebooks.getAll().then((res) => {            //获取所有笔记本列表
@@ -59,7 +74,7 @@ export default {
     //   Bus.$emit('update:notes',this.notes)
     // })
   },
-  props:['curNote'],
+
   data() {
     return {
       // notebooks: [],
@@ -71,10 +86,15 @@ export default {
     ...mapGetters([
       'notebooks',
       'notes',
-      'curBook'
+      'curBook',
+      'curNote'
     ])
   },
 methods: {
+  ...mapMutations([
+    'setCurBook',
+    'setCurNote'
+  ]),
   ...mapActions([
     'getNotebooks',
     'getNotes',
@@ -86,6 +106,16 @@ methods: {
     }
     this.$store.commit('setCurBook',{ curBookId:notebookId })
     this.getNotes({notebookId:this.curBook.id})
+    .then(()=>{
+      this.setCurNote()                      //切换笔记本时
+      this.$router.replace({          //选中当前笔记的路由
+        path:'/note',
+        query:{
+          noteId:this.curNote.id,
+          notebookId:this.curBook.id
+        }
+      })
+    })
    // this.curBook = this.notebooks.find(notebook => notebook.id == notebookId)
     //  Notes.getAll({notebookId})
     //   .then(res =>{

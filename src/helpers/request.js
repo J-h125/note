@@ -3,7 +3,7 @@ import { Message } from "element-ui";
 
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
-axios.defaults.baseURL = "https://note-server.hunger-valley.com";
+axios.defaults.baseURL = "http://localhost:5003";
 axios.defaults.withCredentials = true;
 
 export default function request(url, type = "GET", data = {}) {
@@ -18,7 +18,7 @@ export default function request(url, type = "GET", data = {}) {
     if (type.toLowerCase() === "get") {
       option.params = data;
     } else {
-      option.data = data;
+      option.data =   data;
     }
     axios(option)
       .then((res) => {

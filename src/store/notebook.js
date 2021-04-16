@@ -32,7 +32,8 @@ const mutations = {
     }
 }
 const actions = {
-    getNotebooks({commit}){   //得到笔记本 数组
+    getNotebooks({commit,state}){   //得到笔记本 数组
+        if(state.notebooks !== null)return Promise.resolve() //如果notebooks 不是null 直接返回
        return Notebook.getAll()             //return 的还是一个Promise对象
         .then(res => {
             commit('setNotebooks',{ notebooks:res.data })

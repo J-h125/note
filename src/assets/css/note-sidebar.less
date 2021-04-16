@@ -3,7 +3,6 @@
   width: 290px;
   border-right: 1px solid #ccc;
   background-color: #eee;
-
   .add-note {
     position: absolute;
     right: 5px;
@@ -30,15 +29,16 @@
   }
   .el-dropdown-link{
     cursor: pointer;
+    .iconfont{
+      font-size: 10px;
+    }
   }
   .el-dropdown-menu__item{
-   
     width: 200px;
   }
 
   .menu {
     display: flex;
-    
     div {
       font-size: 12px;
       padding: 2px 10px;
@@ -51,18 +51,13 @@
       }
     }
 
-    .iconfont{
-      font-size: 10px;
-    }
+
   }
 
   .notes {
     li {
-      
-      &:nth-child(odd) {
-        background-color: #f2f2f2;
-      }
-
+      margin:0 5px ;
+      border-bottom: 1px solid #ccc;
       a {
         display: flex;
         padding: 3px 0;
