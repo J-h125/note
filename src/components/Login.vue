@@ -9,7 +9,7 @@
             <transition name="slide">
               <div :class="{ show: isShowRegister }" class="register">
                 <input type="text" v-model="register.username" placeholder="用户名" />
-                <input type="password" v-model="register.password" placeholder="密码" />
+                <input type="password" v- model="register.password" placeholder="密码" />
                 <p :class="{ error: register.isError }">{{ register.notice }}</p>
                 <div @click="onRegister" class="button">创建账号</div>
               </div>

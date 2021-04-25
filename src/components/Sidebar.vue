@@ -6,13 +6,13 @@
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-note"></use>
         </svg>
-        <div class="text">笔记详情</div>
+        <div class="text">详情</div>
        </router-link>
       <router-link to="/notebooks" title="笔记本">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-notebook"></use>
         </svg>
-        <div class="text">笔记本列表</div>
+        <div class="text">列表</div>
         </router-link>
       <router-link to="/trash" title="回收站">
         <svg class="icon" aria-hidden="true">

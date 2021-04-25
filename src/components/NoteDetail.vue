@@ -5,14 +5,14 @@
       <div class="note-empty" v-show="!curNote.id">请选择笔记</div>
       <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
-          <span> 创建日期: {{ curNote.createdAtFriendly }}</span>
-          <span> 更新日期: {{ curNote.updatedAtFriendly }}</span>
+          <span> 创建时间: {{ curNote.createdAtFriendly }}</span>
+          <span> 更新时间: {{ curNote.updatedAtFriendly }}</span>
           <span> {{ statusText }}</span>
           <span class="iconfont icon-delete" @click='onDeleteNote'>
-             <el-button size="mini"  icon="el-icon-delete"  @click='onDeleteNote'></el-button>
+             <el-button size="mini"  icon="el-icon-delete" ></el-button>
           </span>
          <span class="iconfont icon-fullscreen" @click="isShowPreview = !isShowPreview" >
-            <el-button size="mini"   >预览</el-button>
+            <el-button size="mini">预览</el-button>
          </span>
 <!--          <span class="iconfont icon-delete" @click='onDeleteNote'></span>-->
 
@@ -23,18 +23,25 @@
         </div>
           
         <div class="editor">
-          <textarea
+          <!-- <textarea
             v-show="!isShowPreview"
            v-model="curNote.content"
             @input="onUpdateNote"
             @keydown="statusText = '正在输入...'"
             placeholder="输入内容, 支持 markdown 语法"
-          ></textarea>
+          ></textarea> -->
+           <vue-editor  v-show="!isShowPreview"
+           v-model="curNote.content"
+            @input="onUpdateNote"
+            @keydown.native="statusText = '正在输入...'"
+            placeholder="请输入内容"
+            ></vue-editor>
           <div
             class="preview markdown-body"
             v-html="previewContent"
             v-show="isShowPreview"
           ></div>
+          
         </div>
       </div>
     </div>
@@ -47,12 +54,13 @@ import NoteSidebar from "./NoteSidebar.vue";
 import _ from 'lodash'
 import MarkdownIt from 'markdown-it'
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+import { VueEditor } from "vue2-editor";
 
 let md = new MarkdownIt()
 
 export default {
   components: {
-    NoteSidebar,
+    NoteSidebar,  VueEditor
   },
   data() {
     return {
@@ -104,7 +112,7 @@ export default {
         }).catch(data=>{
            this.statusText = '保存出错'
         })
-    },300),
+    },1000),
     onDeleteNote(){
       this.deleteNote({ noteId:this.curNote.id})
       .then(data =>{
@@ -132,7 +140,7 @@ export default {
 #note {
   display: flex;
   align-items: stretch;
-  background-color: #e7eaed;
+  background-color: #fff;
   flex: 1;
 }
 </style>

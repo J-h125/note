@@ -1,11 +1,9 @@
 <template>
   <div class="detail" id="notebook-list">
-    <header>
-      <a href="#"  @click.prevent="onCreate"> <el-button size="mini">添加笔记本</el-button> </a>
-    </header>
     <main>
-      <div class="layout">
-        <h3>笔记本列表({{notebooks.length}})</h3>
+      <div class="layout" >
+         <a href="#"  @click.prevent="onCreate"> <el-button size="large">添加笔记本</el-button> </a>
+        <h1>笔记本列表({{notebooks.length}})</h1>
         <div class="book-list" >
           
           <router-link  v-for="notebook in notebooks" :to=" `/note?notebookId=${notebook.id}` " class="notebook" :key="notebook.id">
@@ -14,7 +12,7 @@
               <span>{{notebook.noteCounts}}</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>  
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>  
-              <span class="date">{{notebook.friendlyCreatedAt}}</span>              
+              <span class="date">{{notebook.createdAtFriendly}}</span>              
             </div>
           </router-link>              
         </div>       
